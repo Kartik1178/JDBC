@@ -144,4 +144,43 @@ public class EmployeePayrollService {
 
         return list;
     }
+    // method to calculate salary statistics grouped by gender
+    public void getSalaryStatisticsByGender() {
+
+        try {
+
+            // establish database connection
+            Connection connection = PayrollDBService.getConnection();
+
+            String query =
+                    "SELECT gender, SUM(salary), AVG(salary), MIN(salary), MAX(salary), COUNT(*) " +
+                            "FROM employee_payroll GROUP BY gender";
+
+            Statement stmt = connection.createStatement();
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+
+                String gender = rs.getString(1);
+                double sum = rs.getDouble(2);
+                double avg = rs.getDouble(3);
+                double min = rs.getDouble(4);
+                double max = rs.getDouble(5);
+                int count = rs.getInt(6);
+
+                System.out.println(
+                        "Gender: " + gender +
+                                " | Total Salary: " + sum +
+                                " | Avg Salary: " + avg +
+                                " | Min Salary: " + min +
+                                " | Max Salary: " + max +
+                                " | Count: " + count
+                );
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
