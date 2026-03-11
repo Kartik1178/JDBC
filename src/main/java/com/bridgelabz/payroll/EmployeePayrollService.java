@@ -108,5 +108,40 @@ public class EmployeePayrollService {
 
         return null;
     }
+    // method to retrieve employees within date range
+    public List<EmployeePayrollData> getEmployeesByDateRange(Date start,Date end){
 
+        List<EmployeePayrollData> list=new ArrayList<>();
+
+        try{
+
+            Connection con=PayrollDBService.getConnection();
+
+            String query=
+                    "SELECT * FROM employee_payroll WHERE start BETWEEN ? AND ?";
+
+            PreparedStatement pstmt=con.prepareStatement(query);
+
+            pstmt.setDate(1,start);
+            pstmt.setDate(2,end);
+
+            ResultSet rs=pstmt.executeQuery();
+
+            while(rs.next()){
+
+                list.add(new EmployeePayrollData(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getDouble("salary"),
+                        null
+                ));
+
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 }
