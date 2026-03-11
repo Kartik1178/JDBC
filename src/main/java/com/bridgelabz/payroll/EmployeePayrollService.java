@@ -52,4 +52,30 @@ public class EmployeePayrollService {
 
         return employeeList;
     }
+    // method to update employee salary
+    public void updateSalary(String name,double salary){
+
+        try{
+
+            Connection con=PayrollDBService.getConnection();
+
+            String query=
+                    "UPDATE employee_payroll SET salary=? WHERE name=?";
+
+            PreparedStatement pstmt=con.prepareStatement(query);
+
+            pstmt.setDouble(1,salary);
+            pstmt.setString(2,name);
+
+            pstmt.executeUpdate();
+
+            System.out.println("Salary Updated");
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
 }
