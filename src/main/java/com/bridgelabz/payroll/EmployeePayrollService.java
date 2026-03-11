@@ -76,6 +76,37 @@ public class EmployeePayrollService {
         }
 
     }
+    // method to retrieve employee by name
+    public EmployeePayrollData getEmployeeByName(String name){
 
+        try{
+
+            Connection con=PayrollDBService.getConnection();
+
+            String query="SELECT * FROM employee_payroll WHERE name=?";
+
+            PreparedStatement pstmt=con.prepareStatement(query);
+
+            pstmt.setString(1,name);
+
+            ResultSet rs=pstmt.executeQuery();
+
+            if(rs.next()){
+
+                return new EmployeePayrollData(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getDouble("salary"),
+                        null
+                );
+
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
 }
